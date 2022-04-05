@@ -15,6 +15,8 @@ db.once('open', () => {
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
+app.use(express.urlencoded({ extended: true }))
+
 app.get('/', (req, res) => {
     res.render('home')
 })
@@ -24,11 +26,21 @@ app.get('/activities', async (req, res) => {
     res.render('activities/index', { activities })
 })
 
+app.get('/activities/new', (req, res) => {
+    res.render('activities/new')
+})
+
+app.post('/activities', async (req, res) => {
+    const activity = new Activity(req.body.activity)
+    await activity.save()
+    res.redirect(`/activities/${activity._id}`)
+})
+
 app.get('/activities/:id', async (req, res) => {
     const activity = await Activity.findById(req.params.id)
-    console.log(activity)
     res.render('activities/show', { activity })
 })
+
 
 const port = 3000
 app.listen(port, console.log(`Listening on port: ${port}`))
