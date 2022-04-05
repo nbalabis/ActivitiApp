@@ -10,7 +10,7 @@
     <h1>All Activities</h1>
     <ul>
         <% for (let activity of activities) { %> 
-            <li><%= activity.title %> </li>
+            <li><a href="/activities/<%= activity._id %>"><%= activity.title %></a></li>
         <% } %> 
     </ul>
 </body>

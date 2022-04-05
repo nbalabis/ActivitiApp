@@ -8,7 +8,7 @@ const app = express()
 mongoose.connect('mongodb://localhost:27017/activiti')
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
-db.once ('open', () => {
+db.once('open', () => {
     console.log('Database connected')
 })
 
@@ -21,7 +21,13 @@ app.get('/', (req, res) => {
 
 app.get('/activities', async (req, res) => {
     const activities = await Activity.find({})
-    res.render('activities/index', {activities})
+    res.render('activities/index', { activities })
+})
+
+app.get('/activities/:id', async (req, res) => {
+    const activity = await Activity.findById(req.params.id)
+    console.log(activity)
+    res.render('activities/show', { activity })
 })
 
 const port = 3000
