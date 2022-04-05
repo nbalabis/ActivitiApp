@@ -19,10 +19,9 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-app.get('/newactivity', async (req, res) => {
-    const activity = new Activity({title: 'firstActivity', description: 'Just a test activity'})
-    await activity.save()
-    res.send(activity)
+app.get('/activities', async (req, res) => {
+    const activities = await Activity.find({})
+    res.render('activities/index', {activities})
 })
 
 const port = 3000
