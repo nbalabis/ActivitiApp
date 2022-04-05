@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const Activity = require('./models/activity')
+const methodOverride = require('method-override')
 
 const app = express()
 
@@ -16,6 +17,7 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({ extended: true }))
+app.use(methodOverride('_method'))
 
 app.get('/', (req, res) => {
     res.render('home')
@@ -41,6 +43,15 @@ app.get('/activities/:id', async (req, res) => {
     res.render('activities/show', { activity })
 })
 
+app.get('/activities/:id/edit', async (req, res) => {
+    const activity = await Activity.findById(req.params.id)
+    res.render('activities/edit', { activity })
+})
+
+app.put('/activities/:id', async (req, res) => {
+    const activity = await Activity.findByIdAndUpdate(req.params.id, { ...req.body.activity })
+    res.redirect(`/activities/${activity._id}`)
+})
 
 const port = 3000
 app.listen(port, console.log(`Listening on port: ${port}`))
