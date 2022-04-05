@@ -53,5 +53,10 @@ app.put('/activities/:id', async (req, res) => {
     res.redirect(`/activities/${activity._id}`)
 })
 
+app.delete('/activities/:id', async(req, res) => {
+    const activity = await Activity.findByIdAndDelete(req.params.id)
+    res.redirect('/activities')
+})
+
 const port = 3000
 app.listen(port, console.log(`Listening on port: ${port}`))

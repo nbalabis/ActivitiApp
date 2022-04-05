@@ -17,6 +17,9 @@
   <h2>
     <%= activity.location %>
   </h2>
+  <form action="/activities/<%= activity._id %>?_method=DELETE" method="POST">
+    <button>Delete</button>
+  </form>
   <footer>
     <a href="/activities/<%= activity._id %>/edit">Edit</a>
     <a href="/activities">All Activities</a>
