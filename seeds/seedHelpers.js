@@ -1,6 +1,9 @@
 module.exports.pre = [
     '',
-    'Learn to '
+    'Learn to ',
+    'Go ',
+    'Try to ',
+    'Let\'s '
 ]
 
 module.exports.activities = [
@@ -24,5 +27,17 @@ module.exports.activities = [
     'Draw',
     'Trail Run',
     'Do Yoga',
-    'Meditate'
+    'Meditate',
+    'Sculpt',
+    'Salsa Dance',
+    'Tango',
+    'Tap Dance',
+    'Do Pilates',
+    'Mix Drinks',
+    'Base Jump',
+    'Bungee Jump',
+    'Fish',
+    'Knit',
+    'Code',
+    'Forage'
 ]
