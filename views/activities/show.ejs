@@ -5,6 +5,8 @@
 <h2>
   <%= activity.location %>
 </h2>
+<img src="<%= activity.image %>" alt="">
+<p><%= activity.description %></p>
 <form action="/activities/<%= activity._id %>?_method=DELETE" method="POST">
   <button>Delete</button>
 </form>
