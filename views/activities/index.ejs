@@ -1,12 +1,33 @@
 <% layout('layouts/boilerplate') %>
+<style>
+  .card {
+    /* border-radius: 4px;
+    background: #fff;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05); */
+    transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
+    /* padding: 14px 80px 18px 36px;
+    cursor: pointer; */
+  }
+
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+  }
+</style>
 <h1>All Activities</h1>
-<div>
-  <a href="/activities/new">Add Activity</a>
-</div>
-<ul>
+<div class="row">
   <% for (let activity of activities) { %>
-  <li><a href="/activities/<%= activity._id %>">
-      <%= activity.title %>
-    </a></li>
+  <a href="/activities/<%= activity._id %>" class="text-decoration-none col mb-3">
+    <div class="card" style="width: 18rem; height: 20rem;">
+      <div class="">
+        <img src="<%= activity.image %>" class="card-img-top img-fluid" style="height: 190px; object-fit: cover;" alt="">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title text-black"><%= activity.title %></h5>
+        <h6 class="card-subtitle mb-2 text-muted"><%= activity.location %></h6>
+        <p class="card-text text-black">$<%= activity.price %></p>
+      </div>
+    </div>
+  </a>
   <% } %>
-</ul>
+</div>
