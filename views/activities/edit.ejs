@@ -26,8 +26,13 @@
         <label for="description" class="form-label">Description</label>
         <textarea class="form-control" id="description" name="activity[description]" rows="3"><%= activity.description %></textarea>
       </div>
-      <button type="submit" class="btn btn-success">Save</button>
-      <a href="/activities/<%= activity._id %>" class="btn btn-danger">Cancel</a>
+      <div class="d-flex justify-content-between">
+        <button type="submit" class="btn btn-success">Save</button>
+        <a href="/activities/<%= activity._id %>" class="btn btn-outline-secondary">Cancel</a>
+      </div>
+    </form>
+    <form class="mt-3 text-center" action="/activities/<%= activity._id %>?_method=DELETE" method="POST">
+      <button class="btn btn-outline-danger">Delete</button>
     </form>
   </div>
 </div>
