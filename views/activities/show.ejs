@@ -57,7 +57,7 @@
 
       <div class="d-flex align-items-center mb-3">
         <a href="#" class="no-pointer">
-          <img class="me-1 host-img" style="height: 4em; width: 4em; object-fit: cover; border-radius: 50%;" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="">
+          <img class="me-2 host-img" style="height: 4em; width: 4em; object-fit: cover; border-radius: 50%;" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="">
         </a>
         <h3>Meet your host, Hosty</h3>
       </div>
@@ -65,6 +65,22 @@
         Velit, saepe corrupti minima dignissimos molestiae eaque tenetur consequuntur pariatur laudantium rem ratione eveniet amet itaque ad non! A quod quos aperiam, labore consectetur sequi! Reiciendis velit odio laborum labore.
       </p>
       <button type="button" class="btn btn-outline-dark">Contact</button>
+
+      <hr class="my-5">
+
+      <h3>Reviews</h3>
+      <div class="row row-cols-2">
+        <% for(let review of activity.reviews) { %>
+        <div class="col">
+          <div class="d-flex align-items-center mb-1">
+            <img class="me-2" style="height: 3em; width: 3em; object-fit: cover; border-radius: 50%;" src="https://source.unsplash.com/random/profilepicture" alt="">
+            <h5><%= review.rating %> Stars</h5>
+          </div>
+          <p><%= review.body %></p>
+        </div>
+        <% } %>
+
+      </div>
 
       <hr class="my-5">
 

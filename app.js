@@ -65,7 +65,7 @@ app.post('/activities', validateActivity, catchAsync(async (req, res, next) => {
 }))
 
 app.get('/activities/:id', catchAsync(async (req, res) => {
-    const activity = await Activity.findById(req.params.id)
+    const activity = await Activity.findById(req.params.id).populate('reviews')
     res.render('activities/show', { activity })
 }))
 
