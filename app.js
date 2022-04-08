@@ -2,6 +2,7 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const Activity = require('./models/activity')
+const Review = require('./models/review')
 const methodOverride = require('method-override')
 const ejsMate = require('ejs-mate')
 const catchAsync = require('./utils/catchAsync')
@@ -71,6 +72,15 @@ app.put('/activities/:id', validateActivity, catchAsync(async (req, res) => {
 app.delete('/activities/:id', catchAsync(async (req, res) => {
     const activity = await Activity.findByIdAndDelete(req.params.id)
     res.redirect('/activities')
+}))
+
+app.post('/activities/:id/reviews', catchAsync(async (req, res) => {
+    const activity = await Activity.findById(req.params.id)
+    const review = new Review(req.body.review)
+    activity.reviews.push(review)
+    await review.save()
+    await activity.save()
+    res.redirect(`/activities/${activity._id}`)
 }))
 
 app.all('*', (req, res, next) => {

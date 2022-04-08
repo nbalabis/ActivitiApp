@@ -66,6 +66,21 @@
       </p>
       <button type="button" class="btn btn-outline-dark">Contact</button>
 
+      <hr class="my-5">
+
+      <h3>Rate this Activity</h3>
+      <form action="/activities/<%= activity._id %>/reviews" method="POST">
+        <div class="mb-3">
+          <label for="rating" class="form-label">Rating</label>
+          <input name="review[rating]" type="range" class="form-range" min="1" max="5" id="rating">
+        </div>
+        <div class="mb-3">
+          <label class="form=label" for="body">Review</label>
+          <textarea class="form-control" name="review[body]" id="body" rows="3"></textarea>
+        </div>
+        <button type="sbumit" class="btn btn-outline-dark">Submit</button>
+      </form>
+
       <hr class="my-3">
 
       <div class="d-grid gap-2 col-6 mx-auto">
@@ -75,6 +90,6 @@
       <div class="d-flex justify-content-evenly align-items-center mt-3">
         <a href="/activities/<%= activity._id %>/edit" class="btn btn-outline-secondary">Edit</a>
       </div>
-      
+
     </div>
   </div>
