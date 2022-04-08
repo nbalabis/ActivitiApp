@@ -2,29 +2,44 @@
 <div class="row">
   <h1 class="text-center">New Activity</h1>
   <div class="col-6 offset-3">
-    <form action="/activities" method="POST">
+    <form action="/activities" method="POST" class="needs-validation" novalidate>
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" name="activity[title]">
+        <input type="text" class="form-control" id="title" name="activity[title]" required>
+        <div class="invalid-feedback">
+          Please provide a title
+        </div>
       </div>
       <div class="mb-3">
         <label for="location" class="form-label">Location</label>
-        <input type="text" class="form-control" id="location" name="activity[location]">
+        <input type="text" class="form-control" id="location" name="activity[location]" required>
+        <div class="invalid-feedback">
+          Please provide a location
+        </div>
       </div>
       <div class="mb-3">
         <label for="image" class="form-label">Image Url</label>
-        <input type="text" class="form-control" id="image" name="activity[image]">
+        <input type="text" class="form-control" id="image" name="activity[image]" required>
+        <div class="invalid-feedback">
+          Please add an image
+        </div>
       </div>
       <div class="mb-3">
         <label for="price" class="form-label">Price</label>
         <div class="input-group">
           <span class="input-group-text">$</span>
-          <input type="number" class="form-control" id="price" name="activity[price]" placeholder="0.00">
+          <input type="number" class="form-control" id="price" name="activity[price]" placeholder="0.00" required>
+          <div class="invalid-feedback">
+            Please provide a price
+          </div>
         </div>
       </div>
       <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="activity[description]" rows="3"></textarea>
+        <textarea class="form-control" id="description" name="activity[description]" rows="3" required></textarea>
+        <div class="invalid-feedback">
+          Please provide a description
+        </div>
       </div>
       <button type="submit" class="btn btn-success">Add Activity</button>
     </form>
