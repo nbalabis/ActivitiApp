@@ -7,7 +7,7 @@ const methodOverride = require('method-override')
 const ejsMate = require('ejs-mate')
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
-const { activitySchema } = require('./schemas.js')
+const { activitySchema, reviewSchema } = require('./schemas.js')
 
 const app = express()
 
@@ -27,6 +27,16 @@ app.use(methodOverride('_method'))
 
 const validateActivity = (req, res, next) => {
     const { error } = activitySchema.validate(req.body)
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next()
+    }
+}
+
+const validateReview = (req, res, next) => {
+    const {error} = reviewSchema.validate(req.body)
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
@@ -74,7 +84,7 @@ app.delete('/activities/:id', catchAsync(async (req, res) => {
     res.redirect('/activities')
 }))
 
-app.post('/activities/:id/reviews', catchAsync(async (req, res) => {
+app.post('/activities/:id/reviews', validateReview, catchAsync(async (req, res) => {
     const activity = await Activity.findById(req.params.id)
     const review = new Review(req.body.review)
     activity.reviews.push(review)
