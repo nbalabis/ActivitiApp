@@ -6,6 +6,7 @@ const methodOverride = require('method-override')
 const ejsMate = require('ejs-mate')
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
+const Joi = require('joi')
 
 const app = express()
 
@@ -37,7 +38,22 @@ app.get('/activities/new', (req, res) => {
 })
 
 app.post('/activities', catchAsync(async (req, res, next) => {
-    if(!req.body.activity) throw new ExpressError('Invalid Campground Data', 400)
+    // if(!req.body.activity) throw new ExpressError('Invalid Campground Data', 400)
+    const activitySchema = Joi.object({
+        activity: Joi.object({
+            title: Joi.string().required(),
+            price: Joi.number().required().min(0),
+            image: Joi.string().required(),
+            description: Joi.string().required(),
+            location: Joi.string().required()
+        }).required()
+    })
+    const { error } = activitySchema.validate(req.body)
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    }
+
     const activity = new Activity(req.body.activity)
     await activity.save()
     res.redirect(`/activities/${activity._id}`)
@@ -68,9 +84,9 @@ app.all('*', (req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-    const {statusCode = 500 } = err
-    if(!err.message) err.message = "Something went wrong!"
-    res.status(statusCode).render('error', {err})
+    const { statusCode = 500 } = err
+    if (!err.message) err.message = "Something went wrong!"
+    res.status(statusCode).render('error', { err })
 })
 
 const port = 3000
