@@ -47,6 +47,7 @@ router.put('/:id', validateActivity, catchAsync(async (req, res) => {
 
 router.delete('/:id', catchAsync(async (req, res) => {
     await Activity.findByIdAndDelete(req.params.id)
+    req.flash('success', 'Activity successfully deleted.')
     res.redirect('/activities')
 }))
 

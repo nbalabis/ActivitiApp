@@ -22,6 +22,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
     activity.reviews.push(review)
     await review.save()
     await activity.save()
+    req.flash('success', 'Thanks for leaving a review!')
     res.redirect(`/activities/${activity._id}`)
 }))
 
