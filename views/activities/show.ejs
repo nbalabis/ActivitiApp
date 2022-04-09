@@ -71,12 +71,15 @@
       <h3>Reviews</h3>
       <div class="row row-cols-2">
         <% for(let review of activity.reviews) { %>
-        <div class="col">
+        <div class="col mt-3">
           <div class="d-flex align-items-center mb-1">
             <img class="me-2" style="height: 3em; width: 3em; object-fit: cover; border-radius: 50%;" src="https://source.unsplash.com/random/profilepicture" alt="">
             <h5><%= review.rating %> Stars</h5>
           </div>
-          <p><%= review.body %></p>
+          <p class="mb-1"><%= review.body %></p>
+          <form class="" action="/activities/<%= activity._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+          </form>
         </div>
         <% } %>
 

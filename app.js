@@ -8,6 +8,7 @@ const ejsMate = require('ejs-mate')
 const catchAsync = require('./utils/catchAsync')
 const ExpressError = require('./utils/ExpressError')
 const { activitySchema, reviewSchema } = require('./schemas.js')
+const { findByIdAndUpdate } = require('./models/activity')
 
 const app = express()
 
@@ -36,7 +37,7 @@ const validateActivity = (req, res, next) => {
 }
 
 const validateReview = (req, res, next) => {
-    const {error} = reviewSchema.validate(req.body)
+    const { error } = reviewSchema.validate(req.body)
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
@@ -91,6 +92,13 @@ app.post('/activities/:id/reviews', validateReview, catchAsync(async (req, res) 
     await review.save()
     await activity.save()
     res.redirect(`/activities/${activity._id}`)
+}))
+
+app.delete('/activities/:id/reviews/:reviewId', catchAsync(async (req, res) => {
+    const { id, reviewId } = req.params
+    await Activity.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
+    await Review.findByIdAndDelete(reviewId)
+    res.redirect(`/activities/${id}`)
 }))
 
 app.all('*', (req, res, next) => {
