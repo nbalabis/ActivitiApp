@@ -9,9 +9,9 @@ const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
 const ExpressError = require('./utils/ExpressError')
-
-const activites = require('./routes/activities')
-const reviews = require('./routes/reviews')
+const activityRoutes = require('./routes/activities')
+const reviewRoutes = require('./routes/reviews')
+const userRoutes = require('./routes/users')
 
 const app = express()
 
@@ -53,8 +53,9 @@ app.use((req, res, next) => {
     next()
 })
 
-app.use('/activities', activites)
-app.use('/activities/:id/reviews', reviews)
+app.use('/activities', activityRoutes)
+app.use('/activities/:id/reviews', reviewRoutes)
+app.use('/', userRoutes)
 
 app.get('/', (req, res) => {
     res.render('home')
