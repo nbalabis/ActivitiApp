@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const Review = require('./review')
 const Schema = mongoose.Schema
 
 const ActivitySchema = new Schema({
@@ -17,6 +18,16 @@ const ActivitySchema = new Schema({
             ref: 'Review'
         }
     ]
+})
+
+ActivitySchema.post('findOneAndDelete', async function (doc) {
+    if (doc) {
+        await Review.deleteMany({
+            _id: {
+                $in: doc.reviews
+            }
+        })
+    }
 })
 
 module.exports = mongoose.model('Activity', ActivitySchema)
