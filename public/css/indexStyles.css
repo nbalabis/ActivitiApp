@@ -1,0 +1,9 @@
+.index-card {
+    width: 18rem;
+    height: 20rem;
+}
+
+.index-card-img {
+    height: 190px;
+    object-fit: cover;
+}

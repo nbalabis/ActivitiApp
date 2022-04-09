@@ -1,23 +1,6 @@
 <% layout('layouts/boilerplate') %>
-<style>
-  .host-img {
-    /* border-radius: 4px;
-  background: #fff;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, .08), 0 0 6px rgba(0, 0, 0, .05); */
-    transition: .3s transform cubic-bezier(.155, 1.105, .295, 1.12), .3s box-shadow, .3s -webkit-transform cubic-bezier(.155, 1.105, .295, 1.12);
-    /* padding: 14px 80px 18px 36px; */
-    cursor: pointer;
-  }
+<link rel="stylesheet" href="/css/showStyles.css">
 
-  .host-img:hover {
-    transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
-  }
-
-  .no-pointer {
-    cursor: default
-  }
-</style>
 <div class="row">
   <div class="col-lg-8 offset-lg-2">
     <h1>
@@ -29,7 +12,7 @@
     <div id="carouselExampleControls" class="carousel slide mb-3" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <img src="<%= activity.image %>" class="d-block w-100" style="height: 50vh; object-fit: cover;" alt="...">
+          <img src="<%= activity.image %>" class="d-block w-100 carousel-img" alt="...">
         </div>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
@@ -57,7 +40,7 @@
 
       <div class="d-flex align-items-center mb-3">
         <a href="#" class="no-pointer">
-          <img class="me-2 host-img" style="height: 4em; width: 4em; object-fit: cover; border-radius: 50%;" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="">
+          <img class="me-2 hover-zoom profile-img host-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" alt="">
         </a>
         <h3>Meet your host, Hosty</h3>
       </div>
@@ -73,7 +56,7 @@
         <% for(let review of activity.reviews) { %>
         <div class="col mt-3">
           <div class="d-flex align-items-center mb-1">
-            <img class="me-2" style="height: 3em; width: 3em; object-fit: cover; border-radius: 50%;" src="https://source.unsplash.com/random/profilepicture" alt="">
+            <img class="me-2 profile-img reviewer-img" src="https://source.unsplash.com/random/profilepicture" alt="">
             <h5><%= review.rating %> Stars</h5>
           </div>
           <p class="mb-1"><%= review.body %></p>

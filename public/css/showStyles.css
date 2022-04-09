@@ -1,0 +1,14 @@
+.carousel-img {
+    height: 50vh;
+    object-fit: cover;
+}
+
+.host-img {
+    height: 4em; 
+    width: 4em;
+}
+
+.reviewer-img {
+    height: 3em; 
+    width: 3em;
+}
