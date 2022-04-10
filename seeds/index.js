@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const Activity = require('../models/activity')
+const User = require('../models/user')
 const cities = require('./cities')
 const { categories } = require('./seedHelpers')
 const { names } = require('./names')
@@ -15,6 +16,23 @@ db.once('open', () => {
 const sample = array => array[Math.floor(Math.random() * array.length)]
 
 const seedDB = async () => {
+    await User.deleteMany({})
+    for (let i = 0; i < 200; i++) {
+        try {
+            const firstName = sample(names)
+            const username = firstName + Math.floor(Math.random() * 1000)
+            const user = new User({
+                username,
+                email: `${username}@fakemail.com`
+            })
+            const password = 'password'
+            await User.register(user, password)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+    //NOTE: can use db.users.aggregate([{$sample: {size: 1}}]) to grab random user
+
     await Activity.deleteMany({})
     for (let i = 0; i < 200; i++) {
         const random1000 = Math.floor(Math.random() * 1000)
