@@ -13,6 +13,9 @@ router.post('/register', catchAsync(async (req, res, next) => {
         const { email, username, password } = req.body
         const user = new User({ email, username })
         const registeredUser = await User.register(user, password)
+        req.login(registeredUser, e => {
+            if (e) return next(err)
+        })
         req.flash('success', 'Welcome to Activiti!')
         res.redirect('/activities')
     } catch (e) {
