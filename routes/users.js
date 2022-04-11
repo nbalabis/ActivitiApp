@@ -28,7 +28,9 @@ router.post('/register', catchAsync(async (req, res, next) => {
 router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/' }), (req, res) => {
     //FIXME: Can I 'redirect' to the current page AND keep the modal open/reopen modal?
     req.flash('success', 'Welcome back!')
-    res.redirect('/activities')
+    const redirectUrl = req.session.returnTo || '/activities'
+    delete req.session.returnTo
+    res.redirect(redirectUrl)
 })
 
 module.exports = router
