@@ -1,4 +1,5 @@
 const express = require('express')
+const passport = require('passport')
 const User = require('../models/user')
 const catchAsync = require('../utils/catchAsync')
 const router = express.Router()
@@ -23,5 +24,11 @@ router.post('/register', catchAsync(async (req, res, next) => {
         res.redirect('/register')
     }
 }))
+
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/' }), (req, res) => {
+    //FIXME: Can I 'redirect' to the current page AND keep the modal open/reopen modal?
+    req.flash('success', 'Welcome back!')
+    res.redirect('/activities')
+})
 
 module.exports = router
