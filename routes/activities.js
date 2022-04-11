@@ -36,12 +36,13 @@ router.get('/new', isLoggedIn, (req, res) => {
 
 router.post('/', isLoggedIn, validateActivity, catchAsync(async (req, res, next) => {
     const activity = new Activity(req.body.activity)
+    activity.host = req.user._id
     await activity.save()
     res.redirect(`/activities/${activity._id}`)
 }))
 
 router.get('/:id', validateId, catchAsync(async (req, res) => {
-    const activity = await Activity.findById(req.params.id).populate('reviews')
+    const activity = await Activity.findById(req.params.id).populate('reviews').populate('host')
     if (!activity) {
         req.flash('error', 'Sorry, we couldn\'t find that activity!')
         return res.redirect('/activities')

@@ -7,6 +7,10 @@ const ActivitySchema = new Schema({
         type: String,
         required: true
     },
+    host: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
     theme: {
         type: String,
         enum: ['Animals', 'Art and Design', 'Culture, Society, and Science', 'Drink', 'Food', 'Entertainment', 'History and Literature', 'Nature and Outdoors', 'Sightseeing, Shopping, and Transportation', 'Sports', 'Wellness']

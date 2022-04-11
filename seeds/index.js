@@ -16,21 +16,21 @@ db.once('open', () => {
 const sample = array => array[Math.floor(Math.random() * array.length)]
 
 const seedDB = async () => {
-    await User.deleteMany({})
-    for (let i = 0; i < 200; i++) {
-        try {
-            const firstName = sample(names)
-            const username = firstName + Math.floor(Math.random() * 1000)
-            const user = new User({
-                username,
-                email: `${username}@fakemail.com`
-            })
-            const password = 'password'
-            await User.register(user, password)
-        } catch (e) {
-            console.log(e)
-        }
-    }
+    // await User.deleteMany({})
+    // for (let i = 0; i < 200; i++) {
+    //     try {
+    //         const firstName = sample(names)
+    //         const username = firstName + Math.floor(Math.random() * 1000)
+    //         const user = new User({
+    //             username,
+    //             email: `${username}@fakemail.com`
+    //         })
+    //         const password = 'password'
+    //         await User.register(user, password)
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
+    // }
     //NOTE: can use db.users.aggregate([{$sample: {size: 1}}]) to grab random user
 
     await Activity.deleteMany({})
@@ -40,6 +40,7 @@ const seedDB = async () => {
         const randomActivity = sample(category.activities)
         const activity = new Activity({
             title: `${randomActivity} with ${sample(names)}`,
+            host: '62526bc9608e7e0f2a320c9b', //FIXME: select random from list of users
             theme: category.theme,
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             image: `https://source.unsplash.com/random/?${randomActivity}`,
