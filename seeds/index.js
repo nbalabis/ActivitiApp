@@ -15,32 +15,40 @@ db.once('open', () => {
 
 const sample = array => array[Math.floor(Math.random() * array.length)]
 
+const getRandomUser = async userCount => {
+    const randomUserNumber = Math.floor(Math.random() * userCount)
+    const randomUser = await User.findOne().skip(randomUserNumber)
+    return randomUser
+}
+
 const seedDB = async () => {
-    // await User.deleteMany({})
-    // for (let i = 0; i < 200; i++) {
-    //     try {
-    //         const firstName = sample(names)
-    //         const username = firstName + Math.floor(Math.random() * 1000)
-    //         const user = new User({
-    //             username,
-    //             email: `${username}@fakemail.com`
-    //         })
-    //         const password = 'password'
-    //         await User.register(user, password)
-    //     } catch (e) {
-    //         console.log(e)
-    //     }
-    // }
-    //NOTE: can use db.users.aggregate([{$sample: {size: 1}}]) to grab random user
+    await User.deleteMany({})
+    for (let i = 0; i < 200; i++) {
+        try {
+            const firstName = sample(names)
+            const username = firstName + Math.floor(Math.random() * 1000)
+            const user = new User({
+                username,
+                email: `${username}@fakemail.com`
+            })
+            const password = 'password'
+            await User.register(user, password)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const userCount = await User.estimatedDocumentCount()
 
     await Activity.deleteMany({})
     for (let i = 0; i < 200; i++) {
+        const randomUser = await getRandomUser(userCount)
         const random1000 = Math.floor(Math.random() * 1000)
         const category = sample(categories)
         const randomActivity = sample(category.activities)
         const activity = new Activity({
-            title: `${randomActivity} with ${sample(names)}`,
-            host: '62526bc9608e7e0f2a320c9b', //FIXME: select random from list of users
+            title: `${randomActivity} with ${randomUser.username}`,
+            host: randomUser._id,
             theme: category.theme,
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             image: `https://source.unsplash.com/random/?${randomActivity}`,
