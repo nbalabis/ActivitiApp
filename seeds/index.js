@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const Activity = require('../models/activity')
 const User = require('../models/user')
+const Review = require('../models/review')
 const cities = require('./cities')
 const { categories } = require('./seedHelpers')
 const { names } = require('./names')
-const axios = require('axios')
 
 mongoose.connect('mongodb://localhost:27017/activiti')
 const db = mongoose.connection
@@ -15,13 +15,14 @@ db.once('open', () => {
 
 const sample = array => array[Math.floor(Math.random() * array.length)]
 
-const getRandomUser = async userCount => {
+const getRandomUser = async () => {
+    const userCount = await User.estimatedDocumentCount()
     const randomUserNumber = Math.floor(Math.random() * userCount)
     const randomUser = await User.findOne().skip(randomUserNumber)
     return randomUser
 }
 
-const seedDB = async () => {
+const seedUsers = async () => {
     await User.deleteMany({})
     const admin = new User({
         username: 'admin',
@@ -46,12 +47,12 @@ const seedDB = async () => {
             console.log(e)
         }
     }
+}
 
-    const userCount = await User.estimatedDocumentCount()
-
+const seedActivities = async () => {
     await Activity.deleteMany({})
     for (let i = 0; i < 200; i++) {
-        const randomUser = await getRandomUser(userCount)
+        const randomUser = await getRandomUser()
         const random1000 = Math.floor(Math.random() * 1000)
         const category = sample(categories)
         const randomActivity = sample(category.activities)
@@ -66,6 +67,30 @@ const seedDB = async () => {
         })
         await activity.save()
     }
+}
+
+const seedReviews = async () => {
+    const allActivities = await Activity.find()
+    for (let activity of allActivities) {
+        const randomReviews = Math.floor(Math.random() * 6) + 1
+        for (let i = 0; i < randomReviews; i++) {
+            const randomUser = await getRandomUser()
+            const review = new Review({
+                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Cursus sit amet dictum sit amet justo donec.',
+                rating: Math.floor(Math.random() * 5) + 1,
+                author: randomUser._id
+            })
+            activity.reviews.push(review)
+            await review.save()
+            await activity.save()
+        }
+    }
+}
+
+const seedDB = async () => {
+    await seedUsers()
+    await seedActivities()
+    await seedReviews()
 }
 
 seedDB().then(() => {
