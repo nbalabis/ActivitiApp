@@ -1,7 +1,7 @@
 const ObjectID = require('mongoose').Types.ObjectId
 const ExpressError = require('./utils/ExpressError')
 const Activity = require('./models/activity')
-const { activitySchema } = require('./schemas.js')
+const { activitySchema, reviewSchema } = require('./schemas.js')
 
 module.exports.isLoggedIn = (req, res, next) => {
     if (!req.isAuthenticated()) {
@@ -38,4 +38,14 @@ module.exports.isHost = async (req, res, next) => {
         return res.redirect(`/activities/${id}`)
     }
     next()
+}
+
+module.exports.validateReview = (req, res, next) => {
+    const { error } = reviewSchema.validate(req.body)
+    if (error) {
+        const msg = error.details.map(el => el.message).join(',')
+        throw new ExpressError(msg, 400)
+    } else {
+        next()
+    }
 }
