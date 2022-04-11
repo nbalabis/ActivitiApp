@@ -1,6 +1,7 @@
 const ObjectID = require('mongoose').Types.ObjectId
 const ExpressError = require('./utils/ExpressError')
 const Activity = require('./models/activity')
+const Review = require('./models/review')
 const { activitySchema, reviewSchema } = require('./schemas.js')
 
 module.exports.isLoggedIn = (req, res, next) => {
@@ -48,4 +49,14 @@ module.exports.validateReview = (req, res, next) => {
     } else {
         next()
     }
+}
+
+module.exports.isReviewAuthor = async (req, res, next) => {
+    const { reviewId, id } = req.params
+    const review = await Review.findById(reviewId)
+    if (!review.author.equals(req.user._id) && !req.user.isAdmin) {
+        req.flash('error', 'You do not have permission to do that!')
+        return res.redirect(`/activities/${id}`)
+    }
+    next()
 }
