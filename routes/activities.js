@@ -21,7 +21,12 @@ router.post('/', isLoggedIn, validateActivity, catchAsync(async (req, res, next)
 }))
 
 router.get('/:id', validateId, catchAsync(async (req, res) => {
-    const activity = await Activity.findById(req.params.id).populate('reviews').populate('host')
+    const activity = await Activity.findById(req.params.id).populate({
+        path: 'reviews',
+        populate: {
+            path: 'author'
+        }
+    }).populate('host')
     if (!activity) {
         req.flash('error', 'Sorry, we couldn\'t find that activity!')
         return res.redirect('/activities')

@@ -8,6 +8,7 @@ const router = express.Router({mergeParams: true})
 router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const activity = await Activity.findById(req.params.id)
     const review = new Review(req.body.review)
+    review.author = req.user._id
     activity.reviews.push(review)
     await review.save()
     await activity.save()
