@@ -23,6 +23,14 @@ const getRandomUser = async userCount => {
 
 const seedDB = async () => {
     await User.deleteMany({})
+    const admin = new User({
+        username: 'admin',
+        firstName: 'Admin',
+        email: 'admin@fakemail.com',
+        isAdmin: true
+    })
+    await User.register(admin, 'admin')
+
     for (let i = 0; i < 200; i++) {
         try {
             const firstName = sample(names)

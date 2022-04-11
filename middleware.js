@@ -33,7 +33,7 @@ module.exports.validateId = (req, res, next) => {
 module.exports.isHost = async (req, res, next) => {
     const { id } = req.params
     const activity = await Activity.findById(id)
-    if (!activity.host.equals(req.user._id)) {
+    if (!activity.host.equals(req.user._id) && !req.user.isAdmin) {
         req.flash('error', 'You do not have permission to do that!')
         return res.redirect(`/activities/${id}`)
     }
