@@ -92,9 +92,11 @@
         <button class="btn btn-lg btn-primary">Let's go!</button>
       </div>
 
+      <% if(currentUser && activity.host.equals(currentUser._id)){ %>
       <div class="d-flex justify-content-evenly align-items-center mt-3">
         <a href="/activities/<%= activity._id %>/edit" class="btn btn-outline-secondary">Edit</a>
       </div>
+      <% } %>
 
     </div>
   </div>
