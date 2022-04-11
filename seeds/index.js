@@ -29,6 +29,7 @@ const seedDB = async () => {
             const username = firstName + Math.floor(Math.random() * 1000)
             const user = new User({
                 username,
+                firstName,
                 email: `${username}@fakemail.com`
             })
             const password = 'password'
@@ -47,7 +48,7 @@ const seedDB = async () => {
         const category = sample(categories)
         const randomActivity = sample(category.activities)
         const activity = new Activity({
-            title: `${randomActivity} with ${randomUser.username}`,
+            title: `${randomActivity}`,
             host: randomUser._id,
             theme: category.theme,
             location: `${cities[random1000].city}, ${cities[random1000].state}`,

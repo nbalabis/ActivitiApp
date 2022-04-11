@@ -5,7 +5,7 @@ const { validateActivity, validateId, isLoggedIn, isHost } = require('../middlew
 const router = express.Router()
 
 router.get('/', catchAsync(async (req, res) => {
-    const activities = await Activity.find({})
+    const activities = await Activity.find({}).populate('host', 'firstName')
     res.render('activities/index', { activities })
 }))
 
