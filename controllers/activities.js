@@ -9,7 +9,7 @@ module.exports.renderNewForm = (req, res) => {
     res.render('activities/new')
 }
 
-module.exports.createActivity = async (req, res, next) => {
+module.exports.create = async (req, res, next) => {
     const activity = new Activity(req.body.activity)
     activity.host = req.user._id
     await activity.save()

@@ -1,6 +1,5 @@
 const express = require('express')
 const catchAsync = require('../utils/catchAsync')
-const Activity = require('../models/activity')
 const activities = require('../controllers/activities')
 const { validateActivity, validateId, isLoggedIn, isHost } = require('../middleware')
 const router = express.Router()
@@ -9,7 +8,7 @@ router.get('/', catchAsync(activities.index))
 
 router.get('/new', isLoggedIn, activities.renderNewForm)
 
-router.post('/', isLoggedIn, validateActivity, catchAsync(activities.createActivity))
+router.post('/', isLoggedIn, validateActivity, catchAsync(activities.create))
 
 router.get('/:id', validateId, catchAsync(activities.show))
 
