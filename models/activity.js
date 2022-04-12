@@ -39,6 +39,24 @@ const ActivitySchema = new Schema({
     ]
 })
 
+ActivitySchema.virtual('numReviews').get(function () {
+    let numReviews = 0
+    for(let review of this.reviews) {
+        numReviews++
+    }
+    return numReviews
+})
+
+ActivitySchema.virtual('avgRating').get(function () {
+    let total = 0
+    let numReviews = 0
+    for(let review of this.reviews) {
+        total += review.rating
+        numReviews++
+    }
+    return Math.round((total/numReviews)*2)/2
+})
+
 ActivitySchema.post('findOneAndDelete', async function (doc) {
     if (doc) {
         await Review.deleteMany({

@@ -1,15 +1,28 @@
 <% layout('layouts/boilerplate') %>
-<link rel="stylesheet" type="text/css" href="/css/stars.css" />
+<link rel="stylesheet" href="/css/stars.css">
 <link rel="stylesheet" href="/css/showStyles.css">
 
 <div class="row">
   <div class="col-lg-8 offset-lg-2">
-    <h1>
-      <%= activity.title %>
-    </h1>
-    <h3>
-      <%= activity.location %>
-    </h3>
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <h1>
+          <%= activity.title %>
+        </h1>
+        <h3>
+          <%= activity.location %>
+        </h3>
+      </div>
+      <a href="#reviews" class="text-decoration-none">
+        <div class="d-flex justify-content-end align-items-center">
+          <p class="starability-result my-0" data-rating="<%= activity.avgRating %>">
+            Rated: <%= activity.avgRating %> stars
+          </p>
+          <h4 class="ms-1 mb-0 text-muted">(<%= activity.numReviews %>)</h4>
+        </div>
+      </a>
+    </div>
+
     <div id="carouselExampleControls" class="carousel slide mb-3" data-bs-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
@@ -52,28 +65,30 @@
 
       <hr class="my-5">
 
-      <h3>Reviews</h3>
-      <div class="row row-cols-2">
-        <% for(let review of activity.reviews) { %>
-        <div class="col mt-3">
-          <div class="d-flex align-items-center mb-1">
-            <img class="me-2 profile-img reviewer-img" src="https://source.unsplash.com/random/profilepicture" alt="">
-            <div class="">
-              <h6 class="mb-1"><%= review.author.firstName || review.author.username %></h6>
-              <p class="starability-result mt-1 mb-0" data-rating="<%= review.rating %>">
-                Rated: <%= review.rating %> stars
-              </p>
+      <div id="reviews">
+        <h3>Reviews</h3>
+        <div class="row row-cols-2">
+          <% for(let review of activity.reviews) { %>
+          <div class="col mt-3">
+            <div class="d-flex align-items-center mb-1">
+              <img class="me-2 profile-img reviewer-img" src="https://source.unsplash.com/random/profilepicture" alt="">
+              <div class="">
+                <h6 class="mb-1"><%= review.author.firstName || review.author.username %></h6>
+                <p class="starability-result mt-1 mb-0" data-rating="<%= review.rating %>">
+                  Rated: <%= review.rating %> stars
+                </p>
+              </div>
             </div>
+            <p class="mb-1"><%= review.body %></p>
+            <% if(currentUser && (review.author.equals(currentUser._id) || currentUser.isAdmin)){ %>
+            <form class="" action="/activities/<%= activity._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-sm btn-outline-danger">Delete</button>
+            </form>
+            <% } %>
           </div>
-          <p class="mb-1"><%= review.body %></p>
-          <% if(currentUser && (review.author.equals(currentUser._id) || currentUser.isAdmin)){ %>
-          <form class="" action="/activities/<%= activity._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
-            <button class="btn btn-sm btn-outline-danger">Delete</button>
-          </form>
           <% } %>
-        </div>
-        <% } %>
 
+        </div>
       </div>
 
       <hr class="my-5">
