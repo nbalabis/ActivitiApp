@@ -1,61 +1,22 @@
 const express = require('express')
 const catchAsync = require('../utils/catchAsync')
 const Activity = require('../models/activity')
+const activities = require('../controllers/activities')
 const { validateActivity, validateId, isLoggedIn, isHost } = require('../middleware')
 const router = express.Router()
 
-router.get('/', catchAsync(async (req, res) => {
-    const activities = await Activity.find({}).populate('host', 'firstName')
-    res.render('activities/index', { activities })
-}))
+router.get('/', catchAsync(activities.index))
 
-router.get('/new', isLoggedIn, (req, res) => {
-    res.render('activities/new')
-})
+router.get('/new', isLoggedIn, activities.renderNewForm)
 
-router.post('/', isLoggedIn, validateActivity, catchAsync(async (req, res, next) => {
-    const activity = new Activity(req.body.activity)
-    activity.host = req.user._id
-    await activity.save()
-    res.redirect(`/activities/${activity._id}`)
-}))
+router.post('/', isLoggedIn, validateActivity, catchAsync(activities.createActivity))
 
-router.get('/:id', validateId, catchAsync(async (req, res) => {
-    const activity = await Activity.findById(req.params.id).populate({
-        path: 'reviews',
-        populate: {
-            path: 'author'
-        }
-    }).populate('host')
-    if (!activity) {
-        req.flash('error', 'Sorry, we couldn\'t find that activity!')
-        return res.redirect('/activities')
-    }
-    res.render('activities/show', { activity })
-}))
+router.get('/:id', validateId, catchAsync(activities.show))
 
-router.get('/:id/edit', isLoggedIn, isHost, validateId, catchAsync(async (req, res) => {
-    const activity = await Activity.findById(req.params.id)
-    if (!activity) {
-        req.flash('error', 'Sorry, we couldn\'t find that activity!')
-        return res.redirect('/activities')
-    }
-    res.render('activities/edit', { activity })
-}))
+router.get('/:id/edit', isLoggedIn, isHost, validateId, catchAsync(activities.renderEditForm))
 
-router.put('/:id', isLoggedIn, isHost, validateActivity, catchAsync(async (req, res) => {
-    const activity = await Activity.findByIdAndUpdate(req.params.id, { ...req.body.activity })
-    res.redirect(`/activities/${activity._id}`)
-}))
+router.put('/:id', isLoggedIn, isHost, validateActivity, catchAsync(activities.edit))
 
-router.delete('/:id', isLoggedIn, isHost, validateId, catchAsync(async (req, res) => {
-    const activity = await Activity.findByIdAndDelete(req.params.id)
-    if (!activity) {
-        req.flash('error', 'Sorry, we couldn\'t find that activity!')
-        return res.redirect('/activities')
-    }
-    req.flash('success', 'Activity successfully deleted.')
-    res.redirect('/activities')
-}))
+router.delete('/:id', isLoggedIn, isHost, validateId, catchAsync(activities.delete))
 
 module.exports = router
