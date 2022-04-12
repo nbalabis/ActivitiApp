@@ -1,4 +1,6 @@
 const User = require('../models/user')
+const Activity = require('../models/activity')
+const activity = require('../models/activity')
 
 module.exports.renderRegisterForm = (req, res) => {
     res.render('users/register')
@@ -47,5 +49,6 @@ module.exports.viewHost = async (req, res) => {
         req.flash('error', 'Sorry, we couldn\'t find that user!')
         return res.redirect('/activities')
     }
-    res.render('users/host', { host })
+    const activities = await Activity.find({host: host._id})
+    res.render('users/host', { host, activities })
 }

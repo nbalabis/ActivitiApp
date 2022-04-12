@@ -32,7 +32,7 @@ const seedUsers = async () => {
     })
     await User.register(admin, 'admin')
 
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 50; i++) {
         try {
             const firstName = sample(names)
             const username = firstName + Math.floor(Math.random() * 1000)
