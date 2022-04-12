@@ -40,3 +40,12 @@ module.exports.logout = (req, res) => {
     req.flash('success', 'Goodbye!')
     res.redirect('/')
 }
+
+module.exports.viewHost = async (req, res) => {
+    const host = await User.findById(req.params.id)
+    if (!host) {
+        req.flash('error', 'Sorry, we couldn\'t find that user!')
+        return res.redirect('/activities')
+    }
+    res.render('users/host', { host })
+}

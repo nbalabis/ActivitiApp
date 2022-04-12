@@ -14,4 +14,6 @@ router.route('/login')
 
 router.get('/logout', users.logout)
 
+router.get('/hosts/:id', catchAsync(users.viewHost))
+
 module.exports = router
