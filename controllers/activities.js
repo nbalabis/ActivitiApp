@@ -1,7 +1,7 @@
 const Activity = require('../models/activity')
 
 module.exports.index = async (req, res) => {
-    const activities = await Activity.find({}).populate('host', 'firstName')
+    const activities = await Activity.find({}).populate('host', 'firstName').populate('reviews')
     res.render('activities/index', { activities })
 }
 

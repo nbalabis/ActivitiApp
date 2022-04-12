@@ -1,4 +1,5 @@
 <% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/css/stars.css">
 <link rel="stylesheet" href="/css/indexStyles.css">
 
 <h1>All Activities</h1>
@@ -6,13 +7,18 @@
   <% for (let activity of activities) { %>
   <a href="/activities/<%= activity._id %>" class="text-decoration-none col mb-3 no-pointer">
     <div class="card index-card hover-zoom">
-      <div class="">
+      <div>
         <img src="<%= activity.image %>" class="card-img-top img-fluid index-card-img" alt="">
       </div>
       <div class="card-body">
         <h5 class="card-title text-black"><%= activity.title %> with <%= activity.host.firstName %></h5>
         <h6 class="card-subtitle mb-2 text-muted"><%= activity.location %></h6>
-        <p class="card-text text-black">$<%= activity.price %></p>
+        <div class="d-flex justify-content-between align-items-center">
+          <p class="starability-result my-0" data-rating="<%= activity.avgRating %>">
+            Rated: <%= activity.avgRating %> stars
+          </p>
+          <p class="card-text text-black">$<%= activity.price %></p>
+        </div>
       </div>
     </div>
   </a>
