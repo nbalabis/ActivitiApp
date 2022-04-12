@@ -4,18 +4,17 @@ const activities = require('../controllers/activities')
 const { validateActivity, validateId, isLoggedIn, isHost } = require('../middleware')
 const router = express.Router()
 
-router.get('/', catchAsync(activities.index))
+router.route('/')
+    .get(catchAsync(activities.index))
+    .post(isLoggedIn, validateActivity, catchAsync(activities.create))
 
 router.get('/new', isLoggedIn, activities.renderNewForm)
 
-router.post('/', isLoggedIn, validateActivity, catchAsync(activities.create))
-
-router.get('/:id', validateId, catchAsync(activities.show))
+router.route('/:id')
+    .get(validateId, catchAsync(activities.show))
+    .put(isLoggedIn, isHost, validateActivity, catchAsync(activities.edit))
+    .delete(isLoggedIn, isHost, validateId, catchAsync(activities.delete))
 
 router.get('/:id/edit', isLoggedIn, isHost, validateId, catchAsync(activities.renderEditForm))
-
-router.put('/:id', isLoggedIn, isHost, validateActivity, catchAsync(activities.edit))
-
-router.delete('/:id', isLoggedIn, isHost, validateId, catchAsync(activities.delete))
 
 module.exports = router
