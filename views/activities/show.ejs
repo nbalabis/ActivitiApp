@@ -60,7 +60,6 @@
             <img class="me-2 profile-img reviewer-img" src="https://source.unsplash.com/random/profilepicture" alt="">
             <div class="">
               <h6 class="mb-1"><%= review.author.firstName || review.author.username %></h6>
-              <!-- <h6 class="mb-0 mt-1"><%= review.rating %> Stars</h6> -->
               <p class="starability-result mt-1 mb-0" data-rating="<%= review.rating %>">
                 Rated: <%= review.rating %> stars
               </p>
@@ -80,12 +79,21 @@
       <hr class="my-5">
 
       <% if(currentUser) { %>
-      <h3>Rate this Activity</h3>
+      <h3>Leave a Review</h3>
       <form action="/activities/<%= activity._id %>/reviews" method="POST" class="needs-validation" novalidate>
-        <div class="mb-3">
-          <label for="rating" class="form-label">Rating</label>
-          <input name="review[rating]" type="range" class="form-range" min="1" max="5" id="rating">
-        </div>
+        <fieldset class="starability-basic">
+          <legend></legend>
+          <input type="radio" id="first-rate1" name="review[rating]" checked value="1" />
+          <label for="first-rate1" title="Terrible">1 star</label>
+          <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+          <label for="first-rate2" title="Not good">2 stars</label>
+          <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+          <label for="first-rate3" title="Average">3 stars</label>
+          <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+          <label for="first-rate4" title="Very good">4 stars</label>
+          <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+          <label for="first-rate5" title="Amazing">5 stars</label>
+        </fieldset>
         <div class="mb-3">
           <label class="form=label" for="body">Review</label>
           <textarea class="form-control" name="review[body]" id="body" rows="3" required></textarea>
