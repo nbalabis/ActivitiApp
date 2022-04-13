@@ -49,6 +49,6 @@ module.exports.viewHost = async (req, res) => {
         req.flash('error', 'Sorry, we couldn\'t find that user!')
         return res.redirect('/activities')
     }
-    const activities = await Activity.find({host: host._id})
+    const activities = await Activity.find({host: host._id}).populate('reviews', 'rating')
     res.render('users/host', { host, activities })
 }
