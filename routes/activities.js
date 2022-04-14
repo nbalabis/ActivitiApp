@@ -9,11 +9,8 @@ const upload = multer({ storage })
 
 router.route('/')
     .get(catchAsync(activities.index))
-    // .post(isLoggedIn, validateActivity, catchAsync(activities.create))
-    .post(upload.single('image'), (req, res) => {
-        res.send('UPLOADED TO CLOUDINARY')
-        console.log(req.body, req.file)
-    })
+    .post(isLoggedIn, upload.array('images'), validateActivity, catchAsync(activities.create))
+    //FIXME: re-work to validate before uploading to cloudinary
 
 router.get('/new', isLoggedIn, activities.renderNewForm)
 

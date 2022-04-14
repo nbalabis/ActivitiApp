@@ -12,6 +12,7 @@ module.exports.renderNewForm = (req, res) => {
 module.exports.create = async (req, res, next) => {
     const activity = new Activity(req.body.activity)
     activity.host = req.user._id
+    activity.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     await activity.save()
     res.redirect(`/activities/${activity._id}`)
 }

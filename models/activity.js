@@ -15,10 +15,12 @@ const ActivitySchema = new Schema({
         type: String,
         enum: ['Animals', 'Art and Design', 'Culture, Society, and Science', 'Drink', 'Food', 'Entertainment', 'History and Literature', 'Nature and Outdoors', 'Sightseeing, Shopping, and Transportation', 'Sports', 'Wellness']
     },
-    image: {
-        type: String,
-        required: true
-    },
+    images: [
+        {
+            url: String,
+            filename: String
+        }
+    ],
     price: {
         type: Number,
         required: true
@@ -41,7 +43,7 @@ const ActivitySchema = new Schema({
 
 ActivitySchema.virtual('numReviews').get(function () {
     let numReviews = 0
-    for(let review of this.reviews) {
+    for (let review of this.reviews) {
         numReviews++
     }
     return numReviews
@@ -50,11 +52,11 @@ ActivitySchema.virtual('numReviews').get(function () {
 ActivitySchema.virtual('avgRating').get(function () {
     let total = 0
     let numReviews = 0
-    for(let review of this.reviews) {
+    for (let review of this.reviews) {
         total += review.rating
         numReviews++
     }
-    return Math.round((total/numReviews)*2)/2
+    return Math.round((total / numReviews) * 2) / 2
 })
 
 ActivitySchema.post('findOneAndDelete', async function (doc) {
