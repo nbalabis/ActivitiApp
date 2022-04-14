@@ -2,7 +2,7 @@
 <div class="row">
   <h1 class="text-center">New Activity</h1>
   <div class="col-6 offset-3">
-    <form action="/activities" method="POST" class="needs-validation" novalidate>
+    <form action="/activities" method="POST" class="needs-validation" enctype="multipart/form-data" novalidate>
       <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control" id="title" name="activity[title]" required>
@@ -18,8 +18,10 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="image" class="form-label">Image Url</label>
-        <input type="text" class="form-control" id="image" name="activity[image]" required>
+        <!-- <label for="image" class="form-label">Image Url</label>
+        <input type="text" class="form-control" id="image" name="activity[image]" required> -->
+        <label for="image" class="form-label">Upload Images</label>
+        <input class="form-control" type="file" id="image" name="image" multiple required>
         <div class="invalid-feedback">
           Please add an image
         </div>
