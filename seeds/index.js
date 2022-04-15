@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config()
+}
 const mongoose = require('mongoose')
 const Activity = require('../models/activity')
 const User = require('../models/user')
@@ -5,6 +8,7 @@ const Review = require('../models/review')
 const cities = require('./cities')
 const { categories } = require('./seedHelpers')
 const { names } = require('./names')
+const { cloudinary } = require('../cloudinary')
 
 mongoose.connect('mongodb://localhost:27017/activiti')
 const db = mongoose.connection
@@ -22,6 +26,17 @@ const getRandomUser = async () => {
     return randomUser
 }
 
+const uploadImage = async (activity) => {
+    let imgUrl = ''
+    await cloudinary.uploader.upload(`https://source.unsplash.com/random/?${activity}`, { folder: 'activiti' },
+        function (error, result) {
+            if (error) console.log(error)
+            imgUrl = result.url
+        }
+    )
+    return imgUrl
+}
+
 const seedUsers = async () => {
     await User.deleteMany({})
     const admin = new User({
@@ -32,7 +47,7 @@ const seedUsers = async () => {
     })
     await User.register(admin, 'admin')
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 5; i++) {
         try {
             const firstName = sample(names)
             const username = firstName + Math.floor(Math.random() * 1000)
@@ -51,11 +66,12 @@ const seedUsers = async () => {
 
 const seedActivities = async () => {
     await Activity.deleteMany({})
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 20; i++) {
         const randomUser = await getRandomUser()
         const random1000 = Math.floor(Math.random() * 1000)
         const category = sample(categories)
         const randomActivity = sample(category.activities)
+        const imgUrl = await uploadImage(randomActivity)
         const activity = new Activity({
             title: `${randomActivity}`,
             host: randomUser._id,
@@ -63,7 +79,7 @@ const seedActivities = async () => {
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             images: [
                 {
-                    url: `https://source.unsplash.com/random/?${randomActivity}`,
+                    url: imgUrl,
                     filename: 'randomImg'
                 }
             ],
