@@ -42,6 +42,9 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.edit = async (req, res) => {
     const activity = await Activity.findByIdAndUpdate(req.params.id, { ...req.body.activity })
+    const images = req.files.map(f => ({ url: f.path, filename: f.filename }))
+    activity.images.push(...images)
+    await activity.save()
     res.redirect(`/activities/${activity._id}`)
 }
 

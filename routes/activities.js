@@ -16,7 +16,7 @@ router.get('/new', isLoggedIn, activities.renderNewForm)
 
 router.route('/:id')
     .get(validateId, catchAsync(activities.show))
-    .put(isLoggedIn, isHost, validateActivity, catchAsync(activities.edit))
+    .put(isLoggedIn, isHost, upload.array('images'), validateActivity, catchAsync(activities.edit))
     .delete(isLoggedIn, isHost, validateId, catchAsync(activities.delete))
 
 router.get('/:id/edit', isLoggedIn, isHost, validateId, catchAsync(activities.renderEditForm))
