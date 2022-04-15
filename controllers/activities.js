@@ -1,4 +1,5 @@
 const Activity = require('../models/activity')
+const { cloudinary } = require('../cloudinary')
 
 module.exports.index = async (req, res) => {
     const activities = await Activity.find({}).populate('host', 'firstName').populate('reviews')
@@ -44,6 +45,12 @@ module.exports.edit = async (req, res) => {
     const activity = await Activity.findByIdAndUpdate(req.params.id, { ...req.body.activity })
     const images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     activity.images.push(...images)
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename)
+        }
+        await activity.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
     await activity.save()
     res.redirect(`/activities/${activity._id}`)
 }
