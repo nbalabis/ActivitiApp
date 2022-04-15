@@ -57,6 +57,9 @@ module.exports.edit = async (req, res) => {
 
 module.exports.delete = async (req, res) => {
     const activity = await Activity.findByIdAndDelete(req.params.id)
+    for (let img of activity.images) {
+        await cloudinary.uploader.destroy(img.filename)
+    }
     if (!activity) {
         req.flash('error', 'Sorry, we couldn\'t find that activity!')
         return res.redirect('/activities')
