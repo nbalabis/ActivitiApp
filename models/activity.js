@@ -2,6 +2,15 @@ const mongoose = require('mongoose')
 const Review = require('./review')
 const Schema = mongoose.Schema
 
+const ImageSchema = new Schema({
+    url: String,
+    filename: String
+})
+
+ImageSchema.virtual('thumbnail').get(function() {
+    return this.url.replace('/upload', '/upload/w_200')
+})
+
 const ActivitySchema = new Schema({
     title: {
         type: String,
@@ -15,12 +24,7 @@ const ActivitySchema = new Schema({
         type: String,
         enum: ['Animals', 'Art and Design', 'Culture, Society, and Science', 'Drink', 'Food', 'Entertainment', 'History and Literature', 'Nature and Outdoors', 'Sightseeing, Shopping, and Transportation', 'Sports', 'Wellness']
     },
-    images: [
-        {
-            url: String,
-            filename: String
-        }
-    ],
+    images: [ImageSchema],
     price: {
         type: Number,
         required: true
